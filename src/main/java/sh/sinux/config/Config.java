@@ -5,8 +5,9 @@ import java.nio.file.Path;
 
 /**
  * Configuration class for the application.
- * It's a singleton class, see {@link #create()} methods family.
+ * It's a singleton class, see {@link #create()}, {@link #create(StorageType, String)} or {@link #getInstance()}.
  * @author sinux-l5d
+ * @since 0.1.0
  */
 public class Config {
     private static Config instance;
@@ -73,6 +74,11 @@ public class Config {
         return FileSystems.getDefault().getPath(configDir, isDotfile + "snipit");
     }
 
+    /**
+     * Returns the singleton instance.
+     * May return null if the instance has not been created yet with {@link #create()} methods family.
+     * @return Config instance
+     */
     public static Config getInstance() {
         return instance;
     }

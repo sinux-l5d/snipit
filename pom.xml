@@ -14,4 +14,92 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
+    <dependencies>
+        <dependency>
+            <groupId>info.picocli</groupId>
+            <artifactId>picocli</artifactId>
+            <version>4.7.0</version>
+        </dependency>
+    </dependencies>
+
+<!--
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>2.0</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <transformers>
+                                <transformer
+                                        implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
+                                <transformer
+                                        implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+
+                                    &lt;!&ndash; note that the main class is set *here* &ndash;&gt;
+
+                                    <mainClass>sh.sinux.Main</mainClass>
+                                </transformer>
+                            </transformers>
+                            <createDependencyReducedPom>false</createDependencyReducedPom>
+                            <filters>
+                                <filter>
+                                    <artifact>*:*</artifact>
+                                    <excludes>
+                                        <exclude>META-INF/*.SF</exclude>
+                                        <exclude>META-INF/*.DSA</exclude>
+                                        <exclude>META-INF/*.RSA</exclude>
+                                    </excludes>
+                                </filter>
+                            </filters>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            &lt;!&ndash; now make the jar chmod +x style executable &ndash;&gt;
+            <plugin>
+                <groupId>org.skife.maven</groupId>
+                <artifactId>really-executable-jar-maven-plugin</artifactId>
+                <version>1.4.1</version>
+                <configuration>
+                    &lt;!&ndash; value of flags will be interpolated into the java invocation &ndash;&gt;
+                    &lt;!&ndash; as "java $flags -jar ..." &ndash;&gt;
+                    <flags>-Xmx1G</flags>
+
+                    &lt;!&ndash; (optional) name for binary executable, if not set will just &ndash;&gt;
+                    &lt;!&ndash; make the regular jar artifact executable &ndash;&gt;
+                    <programFile>nifty-executable</programFile>
+
+                    &lt;!&ndash; (optional) support other packaging formats than jar &ndash;&gt;
+                    &lt;!&ndash; <allowOtherTypes>true</allowOtherTypes> &ndash;&gt;
+
+                    &lt;!&ndash; (optional) name for a file that will define what script gets &ndash;&gt;
+                    &lt;!&ndash; embedded into the executable jar.  This can be used to &ndash;&gt;
+                    &lt;!&ndash; override the default startup script which is &ndash;&gt;
+                    &lt;!&ndash; `#!/bin/sh &ndash;&gt;
+                    &lt;!&ndash;            &ndash;&gt;
+                    &lt;!&ndash; exec java " + flags + " -jar "$0" "$@" &ndash;&gt;
+                    &lt;!&ndash; <scriptFile>src/packaging/someScript.extension</scriptFile> &ndash;&gt;
+                </configuration>
+
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>really-executable-jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+-->
+
 </project>
