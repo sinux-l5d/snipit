@@ -48,11 +48,9 @@ public class FilesystemRepository implements Repository {
         var snippetDir = root.resolve(SNIPPETS_DIR).resolve(name);
         // No duplicate name
         if (snippetDir.toFile().exists()) return false;
-        System.out.println("Doesn't exist yet");
 
         // Create the snippet directory
         if (!snippetDir.toFile().mkdirs()) return false;
-        System.out.println("Created the snippet directory");
 
         // Files to write
         var contentFile = snippetDir.resolve("content");
@@ -67,7 +65,6 @@ public class FilesystemRepository implements Repository {
             remove(name);
             return false;
         }
-        System.out.println("Created the files");
 
         // Write the content
         try {
@@ -78,7 +75,6 @@ public class FilesystemRepository implements Repository {
             remove(name);
             return false;
         }
-        System.out.println("Wrote the content");
 
         return true;
     }
@@ -138,7 +134,15 @@ public class FilesystemRepository implements Repository {
 
     @Override
     public List<String> listTags() {
-        return null;
+        // map this.get to this.list
+        return list()
+                .stream()
+                .map(this::get)
+                .map(Snippet::tags)
+                .flatMap(Arrays::stream)
+                .distinct()
+                .toList();
+
     }
 
     @Override
