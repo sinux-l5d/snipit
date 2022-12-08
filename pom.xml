@@ -22,9 +22,11 @@
         </dependency>
     </dependencies>
 
-<!--
     <build>
         <plugins>
+            <!-- from https://github.com/brianm/really-executable-jars-maven-plugin -->
+
+            <!-- You need to build an exectuable uberjar, I like Shade for that -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
@@ -42,7 +44,7 @@
                                 <transformer
                                         implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
 
-                                    &lt;!&ndash; note that the main class is set *here* &ndash;&gt;
+                                    <!-- note that the main class is set *here* -->
 
                                     <mainClass>sh.sinux.Main</mainClass>
                                 </transformer>
@@ -63,30 +65,30 @@
                 </executions>
             </plugin>
 
-            &lt;!&ndash; now make the jar chmod +x style executable &ndash;&gt;
+            <!-- now make the jar chmod +x style executable -->
             <plugin>
                 <groupId>org.skife.maven</groupId>
                 <artifactId>really-executable-jar-maven-plugin</artifactId>
                 <version>1.4.1</version>
                 <configuration>
-                    &lt;!&ndash; value of flags will be interpolated into the java invocation &ndash;&gt;
-                    &lt;!&ndash; as "java $flags -jar ..." &ndash;&gt;
+                    <!-- value of flags will be interpolated into the java invocation -->
+                    <!-- as "java $flags -jar ..." -->
                     <flags>-Xmx1G</flags>
 
-                    &lt;!&ndash; (optional) name for binary executable, if not set will just &ndash;&gt;
-                    &lt;!&ndash; make the regular jar artifact executable &ndash;&gt;
-                    <programFile>nifty-executable</programFile>
+                    <!-- (optional) name for binary executable, if not set will just -->
+                    <!-- make the regular jar artifact executable -->
+<!--                    <programFile>nifty-executable</programFile>-->
 
-                    &lt;!&ndash; (optional) support other packaging formats than jar &ndash;&gt;
-                    &lt;!&ndash; <allowOtherTypes>true</allowOtherTypes> &ndash;&gt;
+                    <!-- (optional) support other packaging formats than jar -->
+                    <!-- <allowOtherTypes>true</allowOtherTypes> -->
 
-                    &lt;!&ndash; (optional) name for a file that will define what script gets &ndash;&gt;
-                    &lt;!&ndash; embedded into the executable jar.  This can be used to &ndash;&gt;
-                    &lt;!&ndash; override the default startup script which is &ndash;&gt;
-                    &lt;!&ndash; `#!/bin/sh &ndash;&gt;
-                    &lt;!&ndash;            &ndash;&gt;
-                    &lt;!&ndash; exec java " + flags + " -jar "$0" "$@" &ndash;&gt;
-                    &lt;!&ndash; <scriptFile>src/packaging/someScript.extension</scriptFile> &ndash;&gt;
+                    <!-- (optional) name for a file that will define what script gets -->
+                    <!-- embedded into the executable jar.  This can be used to -->
+                    <!-- override the default startup script which is -->
+                    <!-- `#!/bin/sh -->
+                    <!--            -->
+                    <!-- exec java " + flags + " -jar "$0" "$@" -->
+                    <!-- <scriptFile>src/packaging/someScript.extension</scriptFile> -->
                 </configuration>
 
                 <executions>
@@ -100,6 +102,5 @@
             </plugin>
         </plugins>
     </build>
--->
 
 </project>
