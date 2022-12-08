@@ -107,6 +107,7 @@ public class FilesystemRepository implements Repository {
         return new Snippet(name, content, tags);
     }
 
+    @SuppressWarnings({"ResultOfMethodCallIgnored", "resource"})
     @Override
     public boolean remove(String name) {
         if (name == null || name.isBlank()) return false;

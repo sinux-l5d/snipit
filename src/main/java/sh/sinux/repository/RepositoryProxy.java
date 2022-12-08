@@ -21,9 +21,10 @@ public class RepositoryProxy implements Repository {
     /**
      * Store snippets unique names to prevent duplicates.
      */
-    private ArrayList<String> snippetsName = new ArrayList<>();
+    private final ArrayList<String> snippetsName = new ArrayList<>();
 
     private RepositoryProxy(Config config) {
+        //noinspection SwitchStatementWithTooFewBranches
         switch (config.getStorageType()) {
             case FILESYSTEM -> repository = new FilesystemRepository(config);
             default -> throw new RuntimeException("Unknown storage type: " + config.getStorageType());
@@ -77,11 +78,11 @@ public class RepositoryProxy implements Repository {
 
     @Override
     public List<String> listTags() {
-        return null;
+        return repository.listTags();
     }
 
     @Override
     public List<Snippet> search(String query) {
-        return null;
+        return repository.search(query);
     }
 }

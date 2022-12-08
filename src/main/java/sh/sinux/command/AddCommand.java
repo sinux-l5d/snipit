@@ -19,7 +19,7 @@ public class AddCommand implements Callable<Integer> {
     private String name;
 
     @Option(names = {"-t", "--tag"}, description = "The tags of the snippet")
-    private String[] tags = new String[]{};
+    private String[] tags;
 
     @Override
     public Integer call() {
@@ -31,9 +31,9 @@ public class AddCommand implements Callable<Integer> {
             return 1;
         }
 
-        if (name == null) {
-            name = input.getName();
-        }
+        if (name == null) name = input.getName();
+        if (tags == null) tags = new String[0];
+
 
         var ok = repo.save(name, fileContent, tags);
 
