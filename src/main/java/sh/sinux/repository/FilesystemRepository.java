@@ -7,10 +7,9 @@ import java.io.File;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * FilesystemRepository is a repository that stores snippets in the filesystem.
@@ -126,18 +125,23 @@ public class FilesystemRepository implements Repository {
      * @return a list of snippet names
      */
     @Override
-    public List<String> list() {
+    public List<String> listNames() {
         String[] snippets = root.resolve(SNIPPETS_DIR).toFile().list();
         if (snippets == null) return new ArrayList<>();
         return Arrays.asList(snippets);
     }
 
-    @Override
-    public List<String> listTags() {
-        // map this.get to this.list
-        return list()
+    private List<Snippet> listSnippets() {
+        return listNames()
                 .stream()
                 .map(this::get)
+                .toList();
+    }
+
+    @Override
+    public List<String> listTags() {
+        return listSnippets()
+                .stream()
                 .map(Snippet::tags)
                 .flatMap(Arrays::stream)
                 .distinct()
@@ -146,7 +150,53 @@ public class FilesystemRepository implements Repository {
     }
 
     @Override
-    public List<Snippet> search(String query) {
-        return null;
+    public List<Snippet> searchAll(String query) {
+        var snippets = listSnippets();
+
+        var merge = Stream.of(
+                    searchName(snippets, query),
+                    searchTags(snippets, query),
+                    searchContent(snippets, query)
+                )
+                .flatMap(Collection::stream)
+                .collect(Collectors.toSet()); // no duplicate
+
+        return merge.stream().toList();
+    }
+
+    @Override
+    public List<Snippet> searchName(String query) {
+        return searchName(listSnippets(), query);
+    }
+
+    private List<Snippet> searchName(List<Snippet> list, String query) {
+        return list
+                .stream()
+                .filter(snippet -> snippet.name().contains(query))
+                .toList();
+    }
+
+    @Override
+    public List<Snippet> searchContent(String query) {
+        return searchContent(listSnippets(), query);
+    }
+
+    private List<Snippet> searchContent(List<Snippet> list, String query) {
+        return list
+                .stream()
+                .filter(snippet -> snippet.content().contains(query))
+                .toList();
+    }
+
+    @Override
+    public List<Snippet> searchTags(String query) {
+        return searchTags(listSnippets(), query);
+    }
+
+    private List<Snippet> searchTags(List<Snippet> list, String query) {
+        return list
+                .stream()
+                .filter(snippet -> Arrays.stream(snippet.tags()).anyMatch(tag -> tag.contains(query)))
+                .toList();
     }
 }

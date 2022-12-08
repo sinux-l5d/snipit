@@ -1,6 +1,7 @@
 package sh.sinux.command;
 
-import picocli.CommandLine.*;
+import picocli.CommandLine.Command;
+import picocli.CommandLine.Option;
 import sh.sinux.repository.RepositoryProxy;
 
 @Command(name = "list", description = "List all snippets", mixinStandardHelpOptions = true)
@@ -11,7 +12,7 @@ public class ListCommand implements Runnable {
 
     @Override
     public void run() {
-        var snippetNames = RepositoryProxy.getInstance().list();
+        var snippetNames = RepositoryProxy.getInstance().listNames();
         if (snippetNames.isEmpty()) {
             System.out.println("No snippets found");
             return;

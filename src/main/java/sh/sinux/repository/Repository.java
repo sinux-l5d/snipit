@@ -18,9 +18,15 @@ public interface Repository {
      * List all the snippets name in the repository.
      * @return a list of snippet names
      */
-    List<String> list();
+    List<String> listNames();
 
     List<String> listTags();
 
-    List<Snippet> search(String query);
+    List<Snippet> searchAll(String query);
+
+    List<Snippet> searchName(String query);
+
+    List<Snippet> searchContent(String query);
+
+    List<Snippet> searchTags(String query);
 }

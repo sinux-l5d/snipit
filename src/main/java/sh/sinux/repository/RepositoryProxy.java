@@ -29,7 +29,7 @@ public class RepositoryProxy implements Repository {
             case FILESYSTEM -> repository = new FilesystemRepository(config);
             default -> throw new RuntimeException("Unknown storage type: " + config.getStorageType());
         }
-        snippetsName.addAll(repository.list());
+        snippetsName.addAll(repository.listNames());
     }
 
     /**
@@ -71,9 +71,14 @@ public class RepositoryProxy implements Repository {
         return ok;
     }
 
+    /**
+     * List all the snippets name in the repository.
+     *
+     * @return a list of snippet names
+     */
     @Override
-    public List<String> list() {
-        return repository.list();
+    public List<String> listNames() {
+        return snippetsName;
     }
 
     @Override
@@ -82,7 +87,22 @@ public class RepositoryProxy implements Repository {
     }
 
     @Override
-    public List<Snippet> search(String query) {
-        return repository.search(query);
+    public List<Snippet> searchAll(String query) {
+        return repository.searchAll(query);
+    }
+
+    @Override
+    public List<Snippet> searchName(String query) {
+        return repository.searchName(query);
+    }
+
+    @Override
+    public List<Snippet> searchContent(String query) {
+        return repository.searchContent(query);
+    }
+
+    @Override
+    public List<Snippet> searchTags(String query) {
+        return repository.searchTags(query);
     }
 }
