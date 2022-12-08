@@ -1,5 +1,6 @@
 package sh.sinux.repository;
 
+import sh.sinux.Snippet;
 import sh.sinux.config.Config;
 
 import java.util.ArrayList;
@@ -8,6 +9,7 @@ import java.util.List;
 /**
  * The RepositoryProxy choose which repository to use based on the config.
  * This is a singleton class, see {@link #create(Config)} and {@link #getInstance()}.
+ * It performs optimizations when it can.
  * @author sinux-l5d
  * @since 0.1.0
  */
@@ -16,6 +18,9 @@ public class RepositoryProxy implements Repository {
     private static RepositoryProxy instance;
 
     private final Repository repository;
+    /**
+     * Store snippets unique names to prevent duplicates.
+     */
     private ArrayList<String> snippetsName = new ArrayList<>();
 
     private RepositoryProxy(Config config) {
@@ -23,6 +28,7 @@ public class RepositoryProxy implements Repository {
             case FILESYSTEM -> repository = new FilesystemRepository(config);
             default -> throw new RuntimeException("Unknown storage type: " + config.getStorageType());
         }
+        snippetsName.addAll(repository.list());
     }
 
     /**
@@ -43,17 +49,17 @@ public class RepositoryProxy implements Repository {
     }
 
     @Override
-    public boolean save(String name, String content) {
+    public boolean save(String name, String content, String[] tags) {
         // unique name
-        if (snippetsName.contains(name)) return false;
+        if (name == null || snippetsName.contains(name)) return false;
 
-        var ok = repository.save(name, content);
+        var ok = repository.save(name, content, tags);
         if (ok) snippetsName.add(name);
         return ok;
     }
 
     @Override
-    public String get(String name) {
+    public Snippet get(String name) {
         return repository.get(name);
     }
 
@@ -67,5 +73,15 @@ public class RepositoryProxy implements Repository {
     @Override
     public List<String> list() {
         return repository.list();
+    }
+
+    @Override
+    public List<String> listTags() {
+        return null;
+    }
+
+    @Override
+    public List<Snippet> search(String query) {
+        return null;
     }
 }
