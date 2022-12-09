@@ -93,6 +93,9 @@ public class RepositoryProxy implements Repository {
 
     @Override
     public List<Snippet> searchName(String query) {
+        // Not using the cached list of snippets because we return full Snippets objects
+        // Meaning, the inner repository could have a special method to retrieve every snippet at once.
+        // So we let the inner repository do the job.
         return repository.searchName(query);
     }
 

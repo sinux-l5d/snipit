@@ -11,6 +11,5 @@ public record Snippet(String name, String content, String[] tags) {
         if (tags == null) {
             tags = new String[0];
         }
-
     }
 }

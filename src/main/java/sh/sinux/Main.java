@@ -7,8 +7,9 @@ import sh.sinux.config.Config;
 import sh.sinux.config.StorageType;
 import sh.sinux.repository.RepositoryProxy;
 
-@Command(name = "snipit", mixinStandardHelpOptions = true, version = "snipit 0.1.0", synopsisSubcommandLabel = "COMMAND",
-        description = "A simple snippet manager", subcommands = {ListCommand.class, AddCommand.class, RemoveCommand.class, ListTagsCommand.class})
+@Command(name = "snipit", mixinStandardHelpOptions = true, version = "snipit 1.0", synopsisSubcommandLabel = "COMMAND",
+        description = "A simple snippet manager",
+        subcommands = {ListCommand.class, AddCommand.class, RemoveCommand.class, ListTagsCommand.class, SearchCommand.class})
 public class Main {
 
     @Option(names = {"-p", "--path"}, description = "Path to the storage")
