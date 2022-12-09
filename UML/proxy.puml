@@ -1,0 +1,53 @@
+@startuml
+
+' Unidirectional association, we're storing the parent
+Main "1" <-- AddCommand
+Main "1" <-- ListCommand
+
+' Implementation
+RepositoryProxy ..|> Repository
+FilesystemRepository ..|> Repository
+
+' Dependency, we're not storing the Repository
+AddCommand ..> Repository
+ListCommand ..> Repository
+
+' Dependency, we're not storing the RepositoryProxy
+Main .> RepositoryProxy
+
+' Composition, we're storing a FilesystemRepository instance
+RepositoryProxy "1" *- "1" FilesystemRepository
+
+class AddCommand {
+    - Main main
+    + Integer call()
+}
+
+class ListCommand {
+    - Main main
+    + void run()
+}
+
+class Main {
+    + Repository repository()
+}
+
+interface Repository {
+    + boolean save(String name, String content, String[] tags)
+    + Snippet get(String name)
+    + boolean remove(String name)
+    + List<String> listNames()
+    + List<String> listTags()
+    + List<Snippet> searchAll(String query)
+    + List<Snippet> searchName(String query)
+    + List<Snippet> searchContent(String query)
+    + List<Snippet> searchTags(String query)
+}
+
+class RepositoryProxy << Singleton >> {
+    - Repository repository
+}
+
+class FilesystemRepository
+
+@enduml

@@ -1,0 +1,27 @@
+@startuml
+
+
+Main "1" - "1" CommandLine
+
+CommandLine --> Callable
+CommandLine --> Runnable
+
+Callable <|.. AddCommand
+Runnable <|.. InfoCommand
+
+interface Callable<? extends Integer>
+interface Runnable
+
+class Main {
+  {static} + main(String[] args)
+}
+
+class AddCommand {
+    + Integer call()
+}
+
+class InfoCommand {
+    + void run()
+}
+
+@enduml

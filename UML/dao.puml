@@ -1,0 +1,38 @@
+@startuml
+
+ListCommand .> RepositoryProxy
+ListCommand .> Snippet
+
+Repository <|.. RepositoryProxy
+RepositoryProxy ..> Snippet
+
+RepositoryProxy .> Storage
+
+database Storage {
+}
+
+interface Repository {
+    + boolean save(String name, String content, String[] tags)
+    + Snippet get(String name)
+    + boolean remove(String name)
+    + List<String> listNames()
+    + List<String> listTags()
+    + List<Snippet> searchAll(String query)
+    + List<Snippet> searchName(String query)
+    + List<Snippet> searchContent(String query)
+    + List<Snippet> searchTags(String query)
+}
+
+class RepositoryProxy
+
+class  Snippet << (R, #eb4d4b) >> {
+    String name
+    String content
+    String[] tags
+}
+
+class ListCommand {
+    + void execute()
+}
+
+@enduml

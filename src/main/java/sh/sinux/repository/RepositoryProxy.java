@@ -86,6 +86,7 @@ public class RepositoryProxy implements Repository {
      */
     @Override
     public Snippet get(String name) {
+        if (name == null || !snippetsName.contains(name)) return null;
         return repository.get(name);
     }
 

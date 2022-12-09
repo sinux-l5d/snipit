@@ -1,0 +1,29 @@
+@startuml
+
+Config "*" *-- "1" StorageType
+Config <. Main
+
+enum StorageType {
+    FILESYSTEM
+}
+
+class Config << Singleton >> {
+    {static} - Config instance
+    - StorageType storageType
+    - String storagePath
+    -- Constructors --
+    - Config(StorageType, String)
+    + Config create()
+    + Config create(StorageType, String)
+    -- Methods --
+    + Config getInstance()
+}
+
+class Main {
+    -- Methods --
+    {static} + void main(String[])
+    - int executionStrategy(ParseResult)
+    - void init()
+}
+
+@enduml
