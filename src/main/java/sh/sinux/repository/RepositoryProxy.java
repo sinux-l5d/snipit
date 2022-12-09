@@ -11,7 +11,7 @@ import java.util.List;
  * This is a singleton class, see {@link #create(Config)} and {@link #getInstance()}.
  * It performs optimizations when it can.
  * @author sinux-l5d
- * @since 0.1.0
+ * @since 1.0
  */
 public class RepositoryProxy implements Repository {
 

@@ -7,7 +7,7 @@ import java.nio.file.Path;
  * Configuration class for the application.
  * It's a singleton class, see {@link #create()}, {@link #create(StorageType, String)} or {@link #getInstance()}.
  * @author sinux-l5d
- * @since 0.1.0
+ * @since 1.0
  */
 public class Config {
     private static Config instance;
