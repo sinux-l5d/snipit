@@ -99,7 +99,7 @@ public class FilesystemRepository implements Repository {
             return null;
         }
 
-        return new Snippet(name, content, tags);
+        return new Snippet(name, content, snippetDir.toString(), tags);
     }
 
     @SuppressWarnings({"ResultOfMethodCallIgnored", "resource"})
