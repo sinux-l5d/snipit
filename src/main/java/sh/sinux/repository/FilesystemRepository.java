@@ -28,11 +28,18 @@ import java.util.stream.Stream;
  * @since 1.0
  */
 public class FilesystemRepository implements Repository {
+    /** The root directory of the repository */
     private final Path root;
 
+    /** Constant for the snippets directory */
     private static final String SNIPPETS_DIR = "snippets";
 
-    public FilesystemRepository(Config config) {
+    /**
+     * Creates a new FilesystemRepository instance.
+     * @param config the configuration of the application.
+     * @throws RuntimeException if the {@link sh.sinux.config.Config#getStoragePath()} directory cannot be created.
+     */
+    public FilesystemRepository(Config config) throws RuntimeException {
         this.root = FileSystems.getDefault().getPath(config.getStoragePath());
 
         if (!root.toFile().exists())
@@ -41,6 +48,14 @@ public class FilesystemRepository implements Repository {
 
     }
 
+    /**
+     * Save a snippet to the repository.
+     *
+     * @param name the unique name of the snippet
+     * @param content the content of the snippet
+     * @param tags the tags of the snippet
+     * @return true if the snippet was saved successfully, false otherwise (e.g. the snippet name is already used)
+     */
     @Override
     public boolean save(String name, String content, String[] tags) {
         if (name == null || name.isBlank()) return false;
@@ -78,6 +93,12 @@ public class FilesystemRepository implements Repository {
         return true;
     }
 
+    /**
+     * Get a snippet from the repository.
+     *
+     * @param name the unique name of the snippet
+     * @return the snippet, or null if it doesn't exist
+     */
     @Override
     public Snippet get(String name) {
         if (name == null || name.isBlank()) return null;
@@ -102,6 +123,12 @@ public class FilesystemRepository implements Repository {
         return new Snippet(name, content, snippetDir.toString(), tags);
     }
 
+    /**
+     * Remove a snippet from the repository.
+     *
+     * @param name the unique name of the snippet
+     * @return true if the snippet was removed successfully, false otherwise (e.g. the snippet doesn't exist)
+     */
     @SuppressWarnings({"ResultOfMethodCallIgnored", "resource"})
     @Override
     public boolean remove(String name) {
@@ -119,7 +146,7 @@ public class FilesystemRepository implements Repository {
     }
 
     /**
-     * List all the snippets in the repository.
+     * List all the snippets name in the repository.
      * This read the directory in {@link sh.sinux.config.Config#getStoragePath()}/snippets
      *
      * @return a list of snippet names
@@ -131,6 +158,12 @@ public class FilesystemRepository implements Repository {
         return Arrays.asList(snippets);
     }
 
+    /**
+     * List all the snippets in the repository.
+     * This read the directory in {@link sh.sinux.config.Config#getStoragePath()}/snippets
+     *
+     * @return a list of snippets
+     */
     private List<Snippet> listSnippets() {
         return listNames()
                 .stream()
@@ -138,6 +171,10 @@ public class FilesystemRepository implements Repository {
                 .toList();
     }
 
+    /**
+     * List all the tags used in the repository.
+     * @return a list of tags
+     */
     @Override
     public List<String> listTags() {
         return listSnippets()
@@ -149,6 +186,11 @@ public class FilesystemRepository implements Repository {
 
     }
 
+    /**
+     * Search for snippets names, tags or content matching the query.
+     * @param query a word or phrase to search for
+     * @return a list of snippets
+     */
     @Override
     public List<Snippet> searchAll(String query) {
         var snippets = listSnippets();
@@ -164,11 +206,22 @@ public class FilesystemRepository implements Repository {
         return merge.stream().toList();
     }
 
+    /**
+     * Search for snippets names matching the query.
+     * @param query a word or phrase to search for
+     * @return a list of snippets
+     */
     @Override
     public List<Snippet> searchName(String query) {
         return searchName(listSnippets(), query);
     }
 
+    /**
+     * Search for snippets names matching the query.
+     * @param list the list of snippets to search in
+     * @param query a word or phrase to search for
+     * @return a list of snippets
+     */
     private List<Snippet> searchName(List<Snippet> list, String query) {
         return list
                 .stream()
@@ -176,11 +229,22 @@ public class FilesystemRepository implements Repository {
                 .toList();
     }
 
+    /**
+     * Search for snippets content matching the query.
+     * @param query a word or phrase to search for
+     * @return a list of snippets
+     */
     @Override
     public List<Snippet> searchContent(String query) {
         return searchContent(listSnippets(), query);
     }
 
+    /**
+     * Search for snippets content matching the query.
+     * @param list the list of snippets to search in
+     * @param query a word or phrase to search for
+     * @return a list of snippets
+     */
     private List<Snippet> searchContent(List<Snippet> list, String query) {
         return list
                 .stream()
@@ -188,11 +252,22 @@ public class FilesystemRepository implements Repository {
                 .toList();
     }
 
+    /**
+     * Search for snippets tags matching the query.
+     * @param query a word or phrase to search for
+     * @return a list of snippets
+     */
     @Override
     public List<Snippet> searchTags(String query) {
         return searchTags(listSnippets(), query);
     }
 
+    /**
+     * Search for snippets tags matching the query.
+     * @param list the list of snippets to search in
+     * @param query a word or phrase to search for
+     * @return a list of snippets
+     */
     private List<Snippet> searchTags(List<Snippet> list, String query) {
         return list
                 .stream()

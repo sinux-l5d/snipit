@@ -77,7 +77,7 @@
 
                     <!-- (optional) name for binary executable, if not set will just -->
                     <!-- make the regular jar artifact executable -->
-<!--                    <programFile>nifty-executable</programFile>-->
+                    <programFile>snipit.jar</programFile>
 
                     <!-- (optional) support other packaging formats than jar -->
                     <!-- <allowOtherTypes>true</allowOtherTypes> -->

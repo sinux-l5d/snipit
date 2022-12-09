@@ -4,11 +4,25 @@ import picocli.CommandLine.Parameters;
 import picocli.CommandLine.Command;
 import sh.sinux.repository.RepositoryProxy;
 
+/**
+ * The Info command is the user api to get information about a snippet.
+ * It prints the name, the tags and the location of the snippet (a string
+ * meaningful for the current Repository type, like a filesystem path).
+ * @author sinux-l5d
+ * @version 1.0
+ */
 @Command(name = "info", description = "Show snippet info", mixinStandardHelpOptions = true)
 public class InfoCommand implements Runnable {
+
+    /** The name of the snippet to show info about */
     @Parameters(index = "0", description = "The snippet name")
     String name;
 
+    /**
+     * The run method is called by picocli when the command is executed.
+     * It prints the name, the tags and the location of the snippet, along with a note about
+     * how to print the snippet content.
+     */
     @Override
     public void run() {
         var snippet = RepositoryProxy.getInstance().get(name);
