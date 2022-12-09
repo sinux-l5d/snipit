@@ -15,7 +15,8 @@ import sh.sinux.repository.RepositoryProxy;
                 RemoveCommand.class,
                 ListTagsCommand.class,
                 SearchCommand.class,
-                InfoCommand.class
+                InfoCommand.class,
+                ShowCommand.class,
         })
 public class Main {
 
