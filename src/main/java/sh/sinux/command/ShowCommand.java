@@ -3,7 +3,8 @@ package sh.sinux.command;
 
 import picocli.CommandLine.Parameters;
 import picocli.CommandLine.Command;
-import sh.sinux.repository.RepositoryProxy;
+import picocli.CommandLine.ParentCommand;
+import sh.sinux.Main;
 
 /**
  * The Show command is the user api to show a snippet.
@@ -14,6 +15,8 @@ import sh.sinux.repository.RepositoryProxy;
 @Command(name = "show", description = "Show snippet content", mixinStandardHelpOptions = true)
 public class ShowCommand implements Runnable{
 
+    @ParentCommand
+    private Main main;
     /** The unique name of the snippet to show */
     @Parameters(index = "0", description = "The snippet name")
     String name;
@@ -24,7 +27,7 @@ public class ShowCommand implements Runnable{
      */
     @Override
     public void run() {
-        var snippet = RepositoryProxy.getInstance().get(name);
+        var snippet = main.repository().get(name);
         if (snippet == null) {
             System.out.println("Snippet not found");
             return;

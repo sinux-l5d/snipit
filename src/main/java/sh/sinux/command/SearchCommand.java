@@ -2,10 +2,12 @@ package sh.sinux.command;
 
 import picocli.CommandLine.Option;
 import picocli.CommandLine.Command;
+import picocli.CommandLine.ParentCommand;
 import picocli.CommandLine.Parameters;
 import picocli.CommandLine.ArgGroup;
+import sh.sinux.Main;
 import sh.sinux.Snippet;
-import sh.sinux.repository.RepositoryProxy;
+import sh.sinux.repository.Repository;
 
 import java.util.List;
 
@@ -18,6 +20,8 @@ import java.util.List;
 @Command(name = "search", description = "Search in snippets name, content and tags", mixinStandardHelpOptions = true)
 public class SearchCommand implements Runnable {
 
+    @ParentCommand
+    private Main main;
     /** The query to search for */
     @Parameters(index = "0", description = "The query to search")
     String query;
@@ -54,16 +58,17 @@ public class SearchCommand implements Runnable {
     @Override
     public void run() {
         List<Snippet> snippets;
+        Repository repo = main.repository();
         if (options == null || options.all) {
-            snippets = RepositoryProxy.getInstance().searchAll(query);
+            snippets = repo.searchAll(query);
         } else if (options.name) {
-            snippets = RepositoryProxy.getInstance().searchName(query);
+            snippets = repo.searchName(query);
         } else if (options.content) {
-            snippets = RepositoryProxy.getInstance().searchContent(query);
+            snippets = repo.searchContent(query);
         } else if (options.tags) {
-            snippets = RepositoryProxy.getInstance().searchTags(query);
+            snippets = repo.searchTags(query);
         } else {
-            snippets = RepositoryProxy.getInstance().searchAll(query);
+            snippets = repo.searchAll(query);
         }
 
         if (snippets.isEmpty()) {

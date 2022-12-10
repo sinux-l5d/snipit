@@ -2,7 +2,8 @@ package sh.sinux.command;
 
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
-import sh.sinux.repository.RepositoryProxy;
+import picocli.CommandLine.ParentCommand;
+import sh.sinux.Main;
 
 /**
  * The List command is the user api to list snippets.
@@ -12,6 +13,9 @@ import sh.sinux.repository.RepositoryProxy;
  */
 @Command(name = "list", description = "List all snippets", mixinStandardHelpOptions = true)
 public class ListCommand implements Runnable {
+
+    @ParentCommand
+    private Main main;
 
     /** Flag to show tags next to snippet name */
     @Option(names = {"-t", "--tag"}, description = "Show tags along with snippet names")
@@ -23,7 +27,7 @@ public class ListCommand implements Runnable {
      */
     @Override
     public void run() {
-        var snippetNames = RepositoryProxy.getInstance().listNames();
+        var snippetNames = main.repository().listNames();
         if (snippetNames.isEmpty()) {
             System.out.println("No snippets found");
             return;
@@ -32,7 +36,7 @@ public class ListCommand implements Runnable {
         for (var snippetName : snippetNames) {
             String tags = "";
             if (showTags) {
-                var snippet = RepositoryProxy.getInstance().get(snippetName);
+                var snippet = main.repository().get(snippetName);
                 if (snippet != null) {
                     tags = String.join(",", snippet.tags());
                 }

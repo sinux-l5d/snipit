@@ -1,7 +1,9 @@
 package sh.sinux.command;
 
-import picocli.CommandLine.*;
-import sh.sinux.repository.RepositoryProxy;
+import picocli.CommandLine.Command;
+import picocli.CommandLine.ParentCommand;
+import picocli.CommandLine.Parameters;
+import sh.sinux.Main;
 
 import java.util.concurrent.Callable;
 
@@ -14,6 +16,8 @@ import java.util.concurrent.Callable;
 @Command(name = "remove", description = "Remove a snippet", mixinStandardHelpOptions = true)
 public class RemoveCommand implements Callable<Integer> {
 
+    @ParentCommand
+    private Main main;
     /** The unique name of the snippet to remove */
     @Parameters(index = "0", description = "The unique name of the snippet to remove", paramLabel = "NAME")
     private String name;
@@ -25,7 +29,7 @@ public class RemoveCommand implements Callable<Integer> {
      */
     @Override
     public Integer call() {
-        var repo = RepositoryProxy.getInstance();
+        var repo = main.repository();
         var ok = repo.remove(name);
         return ok ? 0 : 1;
     }

@@ -5,6 +5,7 @@ import picocli.CommandLine.*;
 import sh.sinux.command.*;
 import sh.sinux.config.Config;
 import sh.sinux.config.StorageType;
+import sh.sinux.repository.Repository;
 import sh.sinux.repository.RepositoryProxy;
 
 /**
@@ -69,5 +70,9 @@ public class Main {
             Config.create(StorageType.FILESYSTEM, storagePath);
         }
         RepositoryProxy.create(Config.getInstance());
+    }
+
+    public Repository repository() {
+        return RepositoryProxy.getInstance();
     }
 }

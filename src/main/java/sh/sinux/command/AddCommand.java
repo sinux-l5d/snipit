@@ -1,7 +1,10 @@
 package sh.sinux.command;
 
-import picocli.CommandLine.*;
-import sh.sinux.repository.RepositoryProxy;
+import picocli.CommandLine.Command;
+import picocli.CommandLine.ParentCommand;
+import picocli.CommandLine.Parameters;
+import picocli.CommandLine.Option;
+import sh.sinux.Main;
 
 import java.io.File;
 import java.io.IOException;
@@ -19,6 +22,8 @@ import java.util.concurrent.Callable;
 @Command(name = "add", description = "Add a new snippet", mixinStandardHelpOptions = true)
 public class AddCommand implements Callable<Integer> {
 
+    @ParentCommand
+    private Main main;
 
     /** The file to read from */
     @Parameters(index = "0", description = "The file to add as a snippet", paramLabel = "FILE")
@@ -39,7 +44,7 @@ public class AddCommand implements Callable<Integer> {
      */
     @Override
     public Integer call() {
-        var repo = RepositoryProxy.getInstance();
+        var repo = main.repository();
         String fileContent;
         try {
             fileContent = Files.readString(input.toPath());

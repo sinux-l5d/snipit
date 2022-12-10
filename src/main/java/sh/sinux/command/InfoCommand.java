@@ -1,8 +1,9 @@
 package sh.sinux.command;
 
 import picocli.CommandLine.Parameters;
+import picocli.CommandLine.ParentCommand;
 import picocli.CommandLine.Command;
-import sh.sinux.repository.RepositoryProxy;
+import sh.sinux.Main;
 
 /**
  * The Info command is the user api to get information about a snippet.
@@ -13,6 +14,9 @@ import sh.sinux.repository.RepositoryProxy;
  */
 @Command(name = "info", description = "Show snippet info", mixinStandardHelpOptions = true)
 public class InfoCommand implements Runnable {
+
+    @ParentCommand
+    private Main main;
 
     /** The name of the snippet to show info about */
     @Parameters(index = "0", description = "The snippet name")
@@ -25,7 +29,7 @@ public class InfoCommand implements Runnable {
      */
     @Override
     public void run() {
-        var snippet = RepositoryProxy.getInstance().get(name);
+        var snippet = main.repository().get(name);
         if (snippet == null) {
             System.out.println("Snippet not found");
             return;
